@@ -1,28 +1,31 @@
 import streamlit as st
 import pandas as pd
 
-# Function to load custom CSS
-def load_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-# Load custom CSS
-load_css("style.css")
-
-# Set page configuration for better mobile experience
+# 1. Set page configuration first
 st.set_page_config(
     page_title="HSS Student Identifier",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
 
-# Initialize session state for navigation
+# 2. Function to load custom CSS
+def load_css(file_name):
+    try:
+        with open(file_name) as f:
+            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.error(f"CSS file `{file_name}` not found. Please ensure it exists in the repository.")
+
+# Load custom CSS
+load_css("style.css")
+
+# 3. Initialize session state for navigation
 if 'page' not in st.session_state:
     st.session_state.page = 'home'
 if 'student_input' not in st.session_state:
     st.session_state.student_input = ''
 
-# Function to load student numbers from Excel
+# 4. Function to load student numbers from Excel
 @st.cache_data
 def load_student_numbers(file_path):
     try:
@@ -40,17 +43,17 @@ def load_student_numbers(file_path):
         st.error(f"Error loading Excel file: {e}")
         return None
 
-# Load student numbers from the local Excel file
+# 5. Load student numbers from the local Excel file
 student_numbers = load_student_numbers("students.xlsx")
 
-# Home Page: Input Student Number
+# 6. Home Page: Input Student Number
 def home_page():
     st.markdown('<div class="header">HSS Student Identifier</div>', unsafe_allow_html=True)
     st.markdown('<div class="input-section">Enter the student number below to check enrollment status.</div>', unsafe_allow_html=True)
     
     # Input field for student number
     student_input = st.text_input("", "", placeholder="Enter Student Number", key="input")
-
+    
     # Check button
     if st.button("Check", key="check_button"):
         if not student_input.strip():
@@ -60,16 +63,16 @@ def home_page():
             st.session_state.student_input = student_input.strip()
             st.session_state.page = 'result'
 
-# Result Page: Display Membership Status
+# 7. Result Page: Display Membership Status
 def result_page():
     st.markdown('<div class="header">Check Result</div>', unsafe_allow_html=True)
     
     student_input = st.session_state.get('student_input', '')
     
     if student_input in student_numbers:
-        st.markdown(f'<div class="result success">Student number <strong>{student_input}</strong> is <span style="color:#4CAF50;">ENROLLED</span>.</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="result success">✅ **Student number {student_input}** is <span style="color:#4CAF50;">ENROLLED</span>.</div>', unsafe_allow_html=True)
     else:
-        st.markdown(f'<div class="result error">Student number <strong>{student_input}</strong> is <span style="color:#FF0000;">NOT ENROLLED</span>.</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="result error">❌ **Student number {student_input}** is <span style="color:#FF0000;">NOT ENROLLED</span>.</div>', unsafe_allow_html=True)
     
     # Back button to return to home page
     st.markdown('<div class="back-button">', unsafe_allow_html=True)
@@ -77,7 +80,7 @@ def result_page():
         st.session_state.page = 'home'
     st.markdown('</div>', unsafe_allow_html=True)
 
-# Main App Logic
+# 8. Main App Logic
 def main():
     if student_numbers is None:
         st.stop()  # Stop the app if student numbers couldn't be loaded
