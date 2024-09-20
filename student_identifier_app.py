@@ -1,6 +1,14 @@
 import streamlit as st
 import pandas as pd
 
+# Function to load custom CSS
+def load_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+# Load custom CSS
+load_css("style.css")
+
 # Set page configuration for better mobile experience
 st.set_page_config(
     page_title="HSS Student Identifier",
@@ -37,14 +45,14 @@ student_numbers = load_student_numbers("students.xlsx")
 
 # Home Page: Input Student Number
 def home_page():
-    st.title("HSS Student Identifier")
-    st.write("Enter a student number below to check if the student is enrolled.")
+    st.markdown('<div class="header">HSS Student Identifier</div>', unsafe_allow_html=True)
+    st.markdown('<div class="input-section">Enter the student number below to check enrollment status.</div>', unsafe_allow_html=True)
     
     # Input field for student number
-    student_input = st.text_input("Student Number", "")
-    
+    student_input = st.text_input("", "", placeholder="Enter Student Number", key="input")
+
     # Check button
-    if st.button("Check"):
+    if st.button("Check", key="check_button"):
         if not student_input.strip():
             st.warning("Please enter a student number.")
         else:
@@ -54,18 +62,20 @@ def home_page():
 
 # Result Page: Display Membership Status
 def result_page():
-    st.title("Check Result")
+    st.markdown('<div class="header">Check Result</div>', unsafe_allow_html=True)
     
     student_input = st.session_state.get('student_input', '')
     
     if student_input in student_numbers:
-        st.success(f"**Student number {student_input}** is **ENROLLED**.")
+        st.markdown(f'<div class="result success">Student number <strong>{student_input}</strong> is <span style="color:#4CAF50;">ENROLLED</span>.</div>', unsafe_allow_html=True)
     else:
-        st.error(f"**Student number {student_input}** is **NOT ENROLLED**.")
+        st.markdown(f'<div class="result error">Student number <strong>{student_input}</strong> is <span style="color:#FF0000;">NOT ENROLLED</span>.</div>', unsafe_allow_html=True)
     
     # Back button to return to home page
-    if st.button("Back"):
+    st.markdown('<div class="back-button">', unsafe_allow_html=True)
+    if st.button("Back", key="back_button"):
         st.session_state.page = 'home'
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Main App Logic
 def main():

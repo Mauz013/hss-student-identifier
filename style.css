@@ -1,0 +1,54 @@
+/* Header Styling */
+.header {
+    background-color: #4CAF50;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+/* Input Section Styling */
+.input-section {
+    margin-top: 50px;
+    text-align: center;
+}
+
+/* Button Styling */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Result Styling */
+.result {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+/* Back Button Styling */
+.back-button {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 600px) {
+    .header {
+        font-size: 1.5em;
+    }
+    
+    .result {
+        font-size: 1.2em;
+    }
+}
