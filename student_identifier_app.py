@@ -62,9 +62,9 @@ if submit_button:
         st.warning("Please enter a student number.")
     else:
         if student_input in student_numbers:
-            st.markdown(f'<div class="result success">✅ Student number {student_input} is <span style="color:#4CAF50;">ENROLLED</span>.</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="result success">✅ Student number {student_input} is <span style="color:#4CAF50;">HSS Member</span>.</div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div class="result error">❌ Student number {student_input} is <span style="color:#FF0000;">NOT ENROLLED</span>.</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="result error">❌ Student number {student_input} is <span style="color:#FF0000;">NOT HSS Member</span>.</div>', unsafe_allow_html=True)
         
         # Option to search again
         st.markdown('<div class="back-button">', unsafe_allow_html=True)
